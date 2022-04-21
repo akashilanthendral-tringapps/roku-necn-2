@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="timeGridComponent" extends="Group">
+    <interface>
+        <field id="setFocus" type="boolean" onChange="onSetFocus" alwaysNotify="true"/>
+    </interface>
+    <script type="text/brightscript" uri="timeGridComponent.brs" />
+    <children>
+        <TimeGrid 
+            id="timeGridId"
+            maxDays="7"
+            contentStartTime="1648530002"
+            autoDismissTime="0"
+            ignoreTrickPlayKeys="false"
+            overlayBitmapUri="pkg:/images/separated/narutoIcon3.jpg"
+            overlayHeight="100"
+            duration="9000"
+            vertFocusAnimationStyle="floatingFocus"
+           
+        />
+    </children>
+</component>

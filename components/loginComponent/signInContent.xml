@@ -1,0 +1,6 @@
+<component name="signInContent" extends="contentNode">
+    <interface>
+        <field id="content1" type="String" />
+        <field id="texteditbox1" type="String" />
+    </interface>
+</component>

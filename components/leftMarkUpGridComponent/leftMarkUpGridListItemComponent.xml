@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="leftMarkUpGridListItemComponent" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="setContent" />
+    </interface>
+    <script type="text/brightscript" uri="leftMarkUpGridListItemComponent.brs" />
+    <children>
+        <Group id="markUpGridItemContents">
+            <poster id="iconUri" translation="[75,10]"/>
+            <Label id="name" translation="[100, 25]" />
+        </Group>
+    </children>
+</component>

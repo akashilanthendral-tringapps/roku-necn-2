@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="firstVideoItemField" extends="ContentNode">
+    <interface>
+        <field id="firstVideoUrl" type="string" />
+        <field id="firstVideoTitle" type="String"/>
+        <field id="firstVideoStreamFormat" type="String"/>
+        <field id="firstVideoControl" type="String"/>
+        <field id="increaseFirstVideoSize" type="String"/>
+        <field id="secondTimeRenderingFirstVideo" type="assocArray"/>
+        <field id="firstVideoDesc" type="String"/>
+        <field id="firstVideoDuration" type="String"/>
+        <field id="countDownValue" type="Integer" />
+        <field id="action" type="String"/>
+    </interface>
+    
+</component>

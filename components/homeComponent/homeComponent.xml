@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="homeComponent" extends="Group">
+    <script type="text/brightscript" uri="homeComponent.brs" />
+    <interface>
+        <field id="setFocus" type="boolean" onChange="onSetfocus" alwaysNotify="true"/>
+    </interface>
+    <children>
+        <group id="buttonGroup" translation="[900,420]">
+            <Button id="playButton" minWidth="60"  text="Play"  focusedIconUri=" " iconUri=" "/>
+        </group>
+    </children>
+</component>

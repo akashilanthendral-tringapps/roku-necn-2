@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="secondVideoComponent" extends="Group">
+    <script type="text/brightscript" uri="secondVideoComponent.brs" />
+    <interface>
+
+        <field id="itemContent" type="node" onChange="setContent2" />
+        
+    </interface>
+    <children>
+        <Rectangle id="yellowBorder2" width="315" height="181.5625" color="#9900cc">
+            <Video
+            id="secondVideo"
+            height="171.5625"
+            width="305"
+            translation="[5,5]"
+            enableUi="false"
+        />
+        <poster
+            id="bgi"
+            uri="pkg:/images/separated/videoThumbNail.webp" 
+            width="305"  
+            height="171.5625"
+            translation="[0,0]"
+            visible="true"
+        />
+        <Label 
+            id="secondVideoDesc"
+            height="100"
+            width="290"
+            translation="[0,180]"
+            wrap="true"
+        />
+        <Rectangle translation="[225,136.5625]" width="80" height="35" color="#000000">
+            <Label 
+                id="videoDurationDesc"
+                width="100"
+                height="100"
+            />
+        </Rectangle>
+        </Rectangle>
+    </children>
+</component>

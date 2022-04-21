@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="profileComponent" extends="Group">
+    <script type="text/brightscript" uri="profileComponent.brs" />
+    <interface>
+        <field id="setFocus" type="boolean" onChange="onSetFocus" alwaysNotify="true" />
+    </interface>
+    <children>
+        <button text="Profile component" id="profileCompLabelValue"  focusedIconUri=" " iconUri=" " translation="[500,400]" maxWidth="100"/>
+    </children>
+</component>

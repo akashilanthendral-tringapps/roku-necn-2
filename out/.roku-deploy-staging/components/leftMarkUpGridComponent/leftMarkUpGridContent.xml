@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="leftMarkUpGridContent" extends="ContentNode">
+    <!-- <script type="text/brightscript" uri="leftMarkUpGridContent.brs" /> -->
+    <interface>
+        <field id="iconUri" type="string" />
+        <field id="name" type="string" />
+        <field id="componentName" type="string" />
+        <field id="setIconVisible" type="boolean" />
+        <field id="setNameVisible" type="float" />
+    </interface>
+</component>

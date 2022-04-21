@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="firstVideoComponent" extends="Group" >
+    <script type="text/brightscript" uri="pkg:/components/searchComponent/firstVideoComponent.brs" />
+    <interface>
+        <field id="itemContent" type="node" onChange="setContent" />
+    </interface>
+    <children> 
+        <Rectangle id="yellowBorder" width="1020" height="575.2" translation="[-5,0]" color="#9900cc">
+            <Rectangle width="1000" height="565.2" translation="[10,5]">
+                <poster
+                    id="bgi"
+                    uri="pkg:/images/separated/videoThumbNail.webp" 
+                    width="1000"  
+                    height="565.2"
+                    translation="[0,0]"
+                    visible="true"
+                />
+                <Video
+                    id="firstVideo"
+                    width="1000"
+                    height="565.2"
+                    enableUi="false"
+                    translation="[0,0]"
+                />
+                <Rectangle id="videoDurationDescRect" translation="[920,525]" width="80" height="35" color="#000000">
+                    <Label 
+                        id="videoDurationDesc"
+                        width="100"
+                        height="100"
+                    />
+                </Rectangle>
+                <Rectangle id="blackScreen" color="#000000" translation="[0,0]" width="1000" height="565.2" opacity="0.5" >
+                </Rectangle>
+                <!-- <Rectangle id="whiteRect" color="#ffffff" width="300" height="100" translation="[350, 250]" opacity="0.5">
+                    <Rectangle id="blackRect" color="#000000" translation="[10,10]" width="280" height="80" opacity="0.5">
+                    </Rectangle>  
+                    
+                </Rectangle> -->
+                <Rectangle id="horizRect1" color="ffffff" width="300" height="5" translation="[350, 230]" opacity="1.0" />
+                <Rectangle id="horizRect2" color="ffffff" width="305" height="5" translation="[350, 310]" opacity="1.0"  />
+                <Rectangle id="vertRect1" color="ffffff" width="5" height="82" translation="[350, 230]" opacity="1.0" />
+                <Rectangle id="vertRect2" color="ffffff" width="5" height="82" translation="[650, 230]" opacity="1.0" />
+                <Label
+                    id="watchNowLabel"
+                    width="300"
+                    height="100"
+                    text="Watch now"
+                    translation="[420, 260]"
+                />
+                <Label 
+                    id="timerLabel"
+                    width="50"
+                    height="50"
+                    translation="[920,485]"
+                    text=""
+                />
+                <!-- <Timer id="countDown" duration="1" repeat="true" /> -->
+                <Label 
+                    id="firstVideoDesc"
+                    width="1000"
+                    height="1000"
+                    translation="[10,580]"
+                    wrap="true"
+                />
+                
+                <Poster
+                    translation="[0,465.2]"
+                    id="muteIcon"
+                    uri="pkg:/images/separated/muteIcon.png"
+                    width="100"
+                    height="100"
+                    visible="true"
+                />
+    
+            </Rectangle>
+      
+
+        </Rectangle>
+         </children>
+</component>

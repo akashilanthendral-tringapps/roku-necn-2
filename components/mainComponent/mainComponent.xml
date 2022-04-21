@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="mainComponent" extends="Scene">
+
+  <interface>
+    <field id="goBack" type="boolean" onChange="onGoBack" alwaysNotify="true" />
+    <field id="logOut" type="boolean" onChange="handleLogOut" alwaysNotify="true"/>
+    <field id="logIn" type="boolean" onChange="handleLogIn" alwaysNotify="true"/>
+    <field id ="setDataFromLogInComp" type="boolean" onChange="handleSetDataFromLogInComp" alwaysNotify="true"/>
+    <field id="isKeyboardCompPushed" type="boolean" onChange="handleIsKeyboardCompPushed" alwaysNotify="true"/>
+    <field id="deleteBackStackArray" type="boolean" onChange="handleDeleteBackStackArray" alwaysNotify="true"/>
+    <field id="compToPush" type="String" onChange="renderNewComponent" alwaysNotify="true" />
+
+    <field id="valuesToTopComponent" type="assocArray" onChange="setValuesToTopComponent"/>
+  </interface>
+
+  <children>
+    <!-- <Button id = "loginCompButton" text="Go to Login Page" translation="[500, 600]" /> -->
+  </children>
+
+  <script type="text/brightscript" uri="mainComponent.brs" />
+</component>

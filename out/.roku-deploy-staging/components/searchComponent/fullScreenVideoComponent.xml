@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="fullScreenVideoComponent" extends="commonFields">
+    <script type="text/brightscript" uri="fullScreenVideoComponent.brs" />
+    <interface>
+        <!-- <field id="videoData" type="assocArray" onChange="onVideoDataReceived" /> -->
+    </interface>
+    <children>
+        <Rectangle color="#000000" width="1920" height="1080">
+            <Video 
+            id="fullScreenVideo"
+            width="1920"
+            height="1080"
+            translation="[0,0]"
+            enableUi="false"
+            />
+        </Rectangle>
+        
+    </children>
+</component>

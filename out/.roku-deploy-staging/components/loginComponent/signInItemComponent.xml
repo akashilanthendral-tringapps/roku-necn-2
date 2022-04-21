@@ -1,0 +1,37 @@
+<component name="logInItemComponent" extends="commonFields">
+    <interface>
+        <field id="itemContent" type="node" onChange="setContent" />        
+    </interface>
+    <script type="text/brightscript">
+
+        <![CDATA[ 
+
+            sub init()
+                m.content1 = m.top.findNode("content1")
+                m.texteditbox1 = m.top.findNode("texteditbox1")
+            end sub
+
+            sub setContent()
+            
+                m.itemContentValues = m.top.itemContent
+                m.content1.text = m.itemContentValues.content1
+                m.texteditbox1.text = m.itemContentValues.texteditbox1
+
+                if m.content1.text = "password"
+                    m.texteditbox1.secureMode = true
+                end if
+               
+            end sub
+
+        ]]>
+    </script>
+    <children>
+
+        <group id = "item1">
+            <Label id="content1" translation="[60,0]" />
+            <texteditbox id="texteditbox1" translation="[0,30]" />
+        </group>
+
+    </children>
+
+</component>
