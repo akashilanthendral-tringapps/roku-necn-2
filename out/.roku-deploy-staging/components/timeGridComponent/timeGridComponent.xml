@@ -2,6 +2,7 @@
 <component name="timeGridComponent" extends="Group">
     <interface>
         <field id="setFocus" type="boolean" onChange="onSetFocus" alwaysNotify="true"/>
+        <field id="index" type="integer"/>
     </interface>
     <script type="text/brightscript" uri="timeGridComponent.brs" />
     <children>

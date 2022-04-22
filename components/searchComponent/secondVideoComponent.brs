@@ -1,5 +1,5 @@
 sub init()
-
+    print "init() secondVideoComponent!"
     m.secondVideo = m.top.findNode("secondVideo")
     m.yellowBorder2 = m.top.findNode("yellowBorder2")
     m.bgi = m.top.findNode("bgi")
@@ -9,7 +9,7 @@ sub init()
 end sub
 
 sub setContent2()
-    
+    print "setContent2()"
     m.values = m.top.itemContent
   
 
@@ -20,36 +20,77 @@ sub setContent2()
     m.increaseSecondVideoSize = m.values.increaseSecondVideoSize
     m.secondVideoDesc = m.values.secondVideoDesc
     m.secondVideoDuration = m.values.secondVideoDuration
-
-    m.secondTimeRenderingSecondVideo = m.values.secondTimeRenderingSecondVideo
-    setVideoSize2()
-    if m.secondTimeRenderingSecondVideo.isSecondTime = false
-        ' print "m.secondTimeRenderingSecondVideo.isSecondTime = false"
-        setBackgroundImageVisible(true)
-        setYellowBorder2(false)
-        setVideo2()
-    else
-        ' print "m.secondTimeRenderingSecondVideo.isSecondTime = true"
-        if m.secondTimeRenderingSecondVideo.control = "stop"
-            ' print "stop:"
-            ' print "m.secondVideo.state: "m.secondVideo.state
-            setBackgroundImageVisible(true)
-            setYellowBorder2(false)
-            m.secondVideo.control = "stop"
-            ' print "m.secondVideo: "m.secondVideo
-        else
-            ' print "play:"
-            ' print "m.secondVideo.state: "m.secondVideo.state
-            setBackgroundImageVisible(false)
-            setYellowBorder2(true)
-            m.secondVideo.control = "play"
-            ' print "m.secondVideo: "m.secondVideo
-        end if
-        'pauseVideo()
+    m.secondVideoAction = m.values.secondVideoAction
+    print "m.secondVideoAction: "m.secondVideoAction
+    if m.secondVideoAction = "initialRendering"
+        initialRendering()
+    else if m.secondVideoAction = "playVideo"
+        initialRendering()
+        playVideoOperation()
+    else if m.secondVideoAction = "stopVideo"
+        stopVideoOperation()
     end if
 
-    ' setVideoSize2()
-    ' setVideo2()
+    ' m.secondTimeRenderingSecondVideo = m.values.secondTimeRenderingSecondVideo
+    ' if m.secondTimeRenderingSecondVideo.isSecondTime = false
+    '     ' print "m.secondTimeRenderingSecondVideo.isSecondTime = false"
+    '     ' setBackgroundImageVisible(true)
+    '     ' setYellowBorder2(false)
+    '     ' setVideo2()
+    ' else
+    '     ' print "m.secondTimeRenderingSecondVideo.isSecondTime = true"
+    '     if m.secondTimeRenderingSecondVideo.control = "stop"
+    '         ' print "stop:"
+    '         ' print "m.secondVideo.state: "m.secondVideo.state
+    '         ' setBackgroundImageVisible(true)
+    '         ' setYellowBorder2(false)
+    '         ' m.secondVideo.control = "stop"
+    '         ' print "m.secondVideo: "m.secondVideo
+    '     else
+    '         ' print "play:"
+    '         ' print "m.secondVideo.state: "m.secondVideo.state
+    '         ' setBackgroundImageVisible(false)
+    '         ' setYellowBorder2(true)
+    '         ' m.secondVideo.control = "play"
+    '         ' print "m.secondVideo: "m.secondVideo
+    '     end if
+    ' end if
+end sub
+
+sub stopVideo()
+    m.secondVideo.control = "stop"
+end sub
+
+sub playVideo()
+    m.secondVideo.control = "play"
+end sub
+
+sub secondVideoVisibility(value as boolean)
+    m.secondVideo.visible = value
+end sub
+
+sub stopVideoOperation()
+    print "stopVideoOperation()"
+    setBackgroundImageVisible(true)
+    secondVideoVisibility(false)
+    setYellowBorder2(false)
+    stopVideo()
+end sub
+
+sub playVideoOperation()
+    print "playVideoOperation()"
+    setBackgroundImageVisible(false)
+    secondVideoVisibility(true)
+    setYellowBorder2(true)
+    playVideo()
+end sub
+
+sub initialRendering()
+    print "initialRendering()"
+    setBackgroundImageVisible(true)
+    secondVideoVisibility(false)
+    setYellowBorder2(false)
+    setVideo2()
 end sub
 
 sub setYellowBorder2(visibility)
@@ -61,18 +102,10 @@ sub setYellowBorder2(visibility)
 end sub
 
 sub setBackgroundImageVisible(bool as boolean)
- 
-    m.bgi.visible = bool
-    m.secondVideo.visible = not bool
-    
-end sub
-
-sub setVideoSize2()
-    handleIncreaseSecondVideoSize2()
+    m.bgi.visible = bool    
 end sub
 
 function setVideo2() as void
-    ' print " setVideo2()"
     videoContent = createObject("RoSGNode", "ContentNode")
     videoContent.url = m.secondVideoUrl
     videoContent.title = m.secondVideoTitle
@@ -80,8 +113,6 @@ function setVideo2() as void
     m.secondVideoDescNode.text = m.secondVideoDesc
     m.videoDurationDesc.text = m.secondVideoDuration
     m.secondVideo.content = videoContent
-    ' m.secondVideo.control = m.secondVideoControl
-    ' print "m.secondVideo.control: "m.secondVideo.control
 end function
 
 
@@ -99,12 +130,6 @@ sub handleState2()
     else if m.secondVideo.state = "play"
         ' print "playing"
     end if
-end sub
-
-sub handleIncreaseSecondVideoSize2()
-    ' print "handleIncreaseSecondVideoSize2()"
-        m.secondVideo.width = "305"
-        m.secondVideo.height = "171.5625"
 end sub
 
 

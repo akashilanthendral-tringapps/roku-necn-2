@@ -9,5 +9,6 @@
         <field id="secondTimeRenderingSecondVideo" type="assocArray"/>
         <field id="secondVideoDesc" type="String"/>
         <field id="secondVideoDuration" type="String" />
+        <field id="secondVideoAction" type="String"/>
     </interface>
 </component>

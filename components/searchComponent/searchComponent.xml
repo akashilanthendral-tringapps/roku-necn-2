@@ -5,6 +5,7 @@
         <field id="setFocus" type="boolean" onChange="onSetFocus" alwaysNotify="true" />
         <field id="afterOnFirstVideoMUGSelected" type="boolean" onChange="handleAfterOnFirstVideoMUGSelected" alwaysNotify="true" />
         <field id="playFirstVideo" type="boolean" onChange="onPlayFirstVideoSetToTrue" alwaysNotify="true" />
+        <field id="index" type="integer"/>
     </interface>
     <children>
         

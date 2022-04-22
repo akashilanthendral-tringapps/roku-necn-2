@@ -3,6 +3,7 @@
     <script type="text/brightscript" uri="profileComponent.brs" />
     <interface>
         <field id="setFocus" type="boolean" onChange="onSetFocus" alwaysNotify="true" />
+        <field id="index" type="integer"/>
     </interface>
     <children>
         <button text="Profile component" id="profileCompLabelValue"  focusedIconUri=" " iconUri=" " translation="[500,400]" maxWidth="100"/>

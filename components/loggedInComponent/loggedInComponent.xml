@@ -10,6 +10,13 @@
       uri="pkg:/images/separated/necnLogo.png"
       translation="[50, 50]"
     />
+    <Poster 
+      id="upArrow"
+      width="100"
+      height="100"
+      uri="pkg:/images/separated/upArrow.png"
+      translation="[900, 50]"
+    />
     
 
     <Rectangle id="topRect" translation="[0,100]" width="1920" height="1080" color="">
@@ -54,7 +61,7 @@
                 itemComponentName="leftMarkUpGridListItemComponent" 
                 itemSpacing="[0, 40]"
                 itemSize = "[ 240, 100 ]"
-                drawFocusFeedback="false"
+                drawFocusFeedback="true"
                 />
                 <Animation 
                   id = "leftMarkUpGridListAnimation" 
@@ -121,6 +128,13 @@
       </LayoutGroup>
     </Rectangle>
     
+    <Poster 
+      id="downArrow"
+      width="70"
+      height="70"
+      uri="pkg:/images/separated/downArrow.png"
+      translation="[930, 900]"
+    />
   </Rectangle>
   </children>
   

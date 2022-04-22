@@ -16,12 +16,14 @@ sub init()
     m.firstVideoMUG.observeField("itemFocused", "onFirstVideoMUGFocused")
     m.firstVideoMUG.observeField("itemUnfocused", "onFirstVideoMUGUnfocused")
     m.firstVideoMUG.observeField("itemSelected", "onFirstVideoMUGSelected")
+    'm.isPreviouslyFirstVideoMUGFocused = false
 
     m.secondVideoMUG = m.top.findNode("secondVideoMUG")
     m.secondVideoMUG.observeField("itemFocused", "onSecondVideoMUGFocused")
     m.secondVideoMUG.observeField("itemUnfocused", "onSecondVideoMUGUnfocused")
     m.secondVideoMUG.observeField("itemSelected", "onSecondVideoMUGSelected")
     m.isSecondVideoSelected = false
+    'm.isPreviouslySecondVideoMUGFocused = false
 
     m.outerLayoutGroup = m.top.findNode("outerLayoutGroup")
 
@@ -41,7 +43,7 @@ sub init()
     m.sizeOfAnItem = m.secondVideoMUG.itemSpacing[0] + m.secondVideoMUG.itemSize[0]
     m.sizeOfNextVideoToBeVisible = 50
 
-    m.isCountDownFirstTime = true
+    m.isCountDownFirstTime = true 
     renderFirstVideoComponent()
     renderSecondVideoComponent()
 
@@ -73,12 +75,19 @@ sub onTimerFired()
         stopCountDown()
         'stopFirstVideo()
         m.gridItemSelected = "firstVideoMUG"
-        m.top.toParentData = {
+        parentDataDetails = {
             "action": "componentCreation",
             "componentName": "fullScreenVideoComponent"
-            "pageData": getFirstVideoPageData()
+            "pageData": "firstVideoPageData"
             
         }
+        updateToParentData(parentDataDetails)
+        ' m.top.toParentData = {
+        '     "action": "componentCreation",
+        '     "componentName": "fullScreenVideoComponent"
+        '     "pageData": getFirstVideoPageData()
+            
+        ' }
     end if
 end sub
 
@@ -116,13 +125,15 @@ end sub
 
 sub onFirstVideoMUGFocused()
     print "onFirstVideoMUGFocused()"
-    ' playFirstVideo()
+    'm.isPreviouslyFirstVideoMUGFocused = true
+    playFirstVideo()
 end sub
 
 sub onSecondVideoMUGFocused()
 
     print "onSecondVideoMUGFocused()"
     print "m.secondVideoMUG.change: "m.secondVideoMUG.change
+    'm.isPreviouslySecondVideoMUGFocused = true
     if m.isSecondVideoSelected
         ' This condition is to check if the second video is selected and the video is
         ' played in the full screen and back is pressed, then the translation should work correctly
@@ -142,21 +153,35 @@ sub onSecondVideoMUGFocused()
 
     if m.secondVideoMUG.horizFocusDirection = "right"
         m.spaceToMove = m.sizeOfAnItem * (focusedCol - m.previousFocusedColumn)
-        m.top.toParentData = {
+        parentDataDetails = {
             "action": "moveScreen",
             "component": "searchComponent"
             "direction": "right",
             "spaceToMove": m.spaceToMove
         }
+        updateToParentData(parentDataDetails)
+        ' m.top.toParentData = {
+        '     "action": "moveScreen",
+        '     "component": "searchComponent"
+        '     "direction": "right",
+        '     "spaceToMove": m.spaceToMove
+        ' }
     else if m.secondVideoMUG.horizFocusDirection = "left"
         
         m.spaceToMove = m.sizeOfAnItem * (m.previousFocusedColumn - focusedCol)
-        m.top.toParentData = {
+        parentDataDetails = {
             "action": "moveScreen",
             "component": "searchComponent"
             "direction": "left",
             "spaceToMove": m.spaceToMove
         }
+        updateToParentData(parentDataDetails)
+        ' m.top.toParentData = {
+        '     "action": "moveScreen",
+        '     "component": "searchComponent"
+        '     "direction": "left",
+        '     "spaceToMove": m.spaceToMove
+        ' }
     else if m.secondVideoMUG.horizFocusDirection = "none"
         
         if m.secondVideoMUG.hasFocus()
@@ -165,20 +190,34 @@ sub onSecondVideoMUGFocused()
                 
                 if m.previousFocusedColumn - focusedCol > 0
                     m.spaceToMove = m.sizeOfAnItem * (m.previousFocusedColumn - focusedCol)
-                    m.top.toParentData = {
+                    parentDataDetails = {
                         "action": "moveScreen",
                         "component": "searchComponent"
                         "direction": "left",
                         "spaceToMove": m.spaceToMove
                     }
+                    updateToParentData(parentDataDetails)
+                    ' m.top.toParentData = {
+                    '     "action": "moveScreen",
+                    '     "component": "searchComponent"
+                    '     "direction": "left",
+                    '     "spaceToMove": m.spaceToMove
+                    ' }
                 else
                     m.spaceToMove = m.sizeOfAnItem * (focusedCol - m.previousFocusedColumn)
-                    m.top.toParentData = {
+                    parentDataDetails = {
                         "action": "moveScreen",
                         "component": "searchComponent"
                         "direction": "right",
                         "spaceToMove": m.spaceToMove
                     }
+                    updateToParentData(parentDataDetails)
+                    ' m.top.toParentData = {
+                    '     "action": "moveScreen",
+                    '     "component": "searchComponent"
+                    '     "direction": "right",
+                    '     "spaceToMove": m.spaceToMove
+                    ' }
                 end if
             end if
         end if
@@ -244,33 +283,41 @@ sub handleAfterOnFirstVideoMUGSelected()
         ' }
     end if
 end sub
-sub onSecondVideoMUGSelected()
-    print "onSecondVideoMUGSelected()"
-    m.isSecondVideoSelected = true
-    m.gridItemSelected = "secondVideoMUG"
+
+function getSecondVideoPageData() as object
     m.secondVideoSelectedIndex = m.secondVideoMUG.itemSelected
     m.secondVideoSelected = m.secondVideoMUG.content.getChild(m.secondVideoMUG.itemSelected)
-    ' m.secondVideoSelected.secondVideoControl = "stop"
-    print "m.secondVideoSelected: "m.secondVideoSelected
-    print "to parent data assigned"
     pageData = {
         "title": m.secondVideoSelected.secondVideoTitle,
         "control": m.secondVideoSelected.secondVideoControl,
         "url": m.secondVideoSelected.secondVideoUrl,
         "streamFormat": m.secondVideoSelected.secondVideoStreamFormat
     }
+    return pageData
+end function
 
-    m.secondVideoSelected.secondTimeRenderingSecondVideo = {
-        "isSecondTime": true
-        "control": "stop"
-    }
+sub onSecondVideoMUGSelected()
+    print "onSecondVideoMUGSelected()"
+    m.isSecondVideoSelected = true
+    m.gridItemSelected = "secondVideoMUG"
+    
+    ' m.secondVideoSelected.secondVideoControl = "stop"
+    print "m.secondVideoSelected: "m.secondVideoSelected
+    print "to parent data assigned"
+   
 
-    m.top.toParentData = {
+    ' m.secondVideoSelected.secondTimeRenderingSecondVideo = {
+    '     "isSecondTime": true
+    '     "control": "stop"
+    ' }
+    stopSecondVideo()
+    parentDataDetails = {
         "action": "componentCreation",
         "componentName": "fullScreenVideoComponent"
-        "pageData": pageData
+        "pageData": "secondVideoPageData"
         
     }
+    updateToParentData(parentDataDetails)
     
 end sub
 ' sub onSecondVideoMUGFocused()
@@ -414,14 +461,7 @@ sub renderFirstVideoComponent()
     m.firstVideoChildContent.firstVideoControl = firstVideoDetails.control
     m.firstVideoChildContent.firstVideoDuration = "2:50"
     m.firstVideoChildContent.firstVideoDesc = firstVideoDetails.desc
-    m.firstVideoChildContent.secondTimeRenderingFirstVideo = {
-        "isSecondTime": false,
-        "control": "play",
-
-    }
     m.firstVideoChildContent.action = "initialRendering"
-   
-    ' m.firstVideoChildContent.setBgi= false
     m.firstVideoMUG.content = m.firstVideoParentContent
     print "Rendered firstVideoComponent"
 
@@ -430,57 +470,72 @@ end sub
 sub renderSecondVideoComponent()
     print "renderSecondVideoComponent()"
     secondVideoDetails = getSecondVideoDetails()
-    
-        
     m.secondVideoParentContent = CreateObject("roSGNode", "ContentNode")
-   
     for each item in secondVideoDetails
+        print "Inside for loop!!!!"
         m.secondVideoChildContent = m.secondVideoParentContent.createChild("secondVideoItemField")
         m.secondVideoChildContent.secondVideoUrl = item.url
         m.secondVideoChildContent.secondVideoTitle = item.title
         m.secondVideoChildContent.secondVideoStreamFormat = item.streamFormat
         m.secondVideoChildContent.secondVideoDuration = "2:50"
-        'm.secondVideoChildContent.secondVideoControl = item.control
-    
         m.secondVideoChildContent.secondVideoDesc = item.desc
-        m.secondVideoChildContent.secondTimeRenderingSecondVideo = {
-            "isSecondTime": false,
-            "control": "stop"
-        }
+        m.secondVideoChildContent.secondVideoAction = "initialRendering"
     end for
     print "setting content"
     m.secondVideoMUG.content = m.secondVideoParentContent
 end sub
 
+sub setFocusToFirstVideo()
+    m.firstVideoMUG.setFocus(true)
+end sub
+
+sub setFocusToSecondVideo()
+    m.secondVideoMUG.setFocus(true)
+end sub
+
 sub onSetFocus(event)
     
     print "inside: onSetFocus()"
-    if m.isFirstTimeFirstVideoMUGGetsFocus
-        m.isFirstTimeFirstVideoMUGGetsFocus = false
-        m.firstVideoMUG.setFocus(true)
-    end if
+    ' if m.isFirstTimeFirstVideoMUGGetsFocus
+    '     m.isFirstTimeFirstVideoMUGGetsFocus = false
+    '     setFocusToFirstVideo()
+    ' end if
     ' renderFirstVideoComponent()
     ' renderSecondVideoComponent()
+    ' if m.isPreviouslySecondVideoMUGFocused
+    '     setFocusToSecondVideo()
+    '     return
+    ' else if m.isPreviouslyFirstVideoMUGFocused
+    '     startCountDown()
+    '     setFocusToFirstVideo()
+    '     return
+    ' end if
     if event.getData()
-        print "if event.getData()"
-        m.firstVideoMUG.setFocus(true)
-        ' m.firstVideoChildContent.action = "startCountDown"
-        print "About to start countdown!"
         startCountDown()
-        print "ABOUT TO PLAYVIDEO()"
-        playFirstVideo()
-        print "AFTER PLAYVIDEO()"
-        print "playFirstVideo(): executed"
+        'renderFirstVideoComponent()
+        setFocusToFirstVideo()
+        'playFirstVideo()
+        ' print "if event.getData()"
+        ' m.firstVideoMUG.setFocus(true)
+        ' ' m.firstVideoChildContent.action = "startCountDown"
+        ' print "About to start countdown!"
+        ' startCountDown()
+        ' print "ABOUT TO PLAYVIDEO()"
+        ' playFirstVideo()
+        ' print "AFTER PLAYVIDEO()"
+        ' print "playFirstVideo(): executed"
     else
+        stopCountDown()
         stopFirstVideo()
     end if
     
-    print "m.firstVideoMUG.hasFocus(): "m.firstVideoMUG.hasFocus()
-    m.firstVideoChildContent.firstVideoControl = "play"
-    print "m.secondVideoMUG: "m.secondVideoMUG.hasFocus()
+    ' print "m.firstVideoMUG.hasFocus(): "m.firstVideoMUG.hasFocus()
+    ' m.firstVideoChildContent.firstVideoControl = "play"
+    ' print "m.secondVideoMUG: "m.secondVideoMUG.hasFocus()
 end sub
 
 sub stopFirstVideo()
+    m.isFirstVideoPlaying = false
     m.firstVideoChildContent.action = "stopVideo"
     ' m.firstVideoChildContent.secondTimeRenderingFirstVideo = {
     '     "isSecondTime": true
@@ -494,52 +549,96 @@ end sub
 ' end sub
 
 sub playFirstVideo()
+    print "Inside playFirstVideo()"
+    m.isFirstVideoPlaying = true
     m.firstVideoChildContent.action = "playVideo"
     ' m.firstVideoChildContent.secondTimeRenderingFirstVideo = {
     '     "isSecondTime": true
     '     "control": "play"
     ' }
+    print "end playFirstVideo()"
+end sub
+
+sub updateToParentData(data as object)
+    if data.action = "componentCreation"
+        if data.pageData = "firstVideoPageData"
+            m.top.toParentData = {
+                "action": "componentCreation",
+                "componentName": "fullScreenVideoComponent"
+                "pageData": getFirstVideoPageData()
+                
+            }
+        else if data.pageData = "secondVideoPageData"
+            m.top.toParentData = {
+                "action": "componentCreation",
+                "componentName": "fullScreenVideoComponent"
+                "pageData": getSecondVideoPageData()
+                
+            }
+        end if
+    else if data.action = "moveScreen"
+        m.top.toParentData = data
+    end if
 end sub
 
 sub playSecondVideo()
-    m.lastFocusedItemOfSecondVideo.secondTimeRenderingSecondVideo = {
-        "isSecondTime": true
-        "control": "play"
-    }
+    m.isSecondVideoPlaying = true
+    m.lastFocusedItemOfSecondVideo.secondVideoAction = "playVideo"
 end sub
 sub stopSecondVideo()
-    m.lastFocusedItemOfSecondVideo.secondTimeRenderingSecondVideo = {
-        "isSecondTime": true
-        "control": "stop"
-    }
+    m.isSecondVideoPlaying = false
+    m.lastFocusedItemOfSecondVideo.secondVideoAction = "stopVideo"
 end sub
 
+sub handleWhenUpPressed()
+    if m.firstVideoMUG.hasFocus()
+        m.gridItemSelected = "firstVideoMUG"
+    else
+        m.gridItemSelected = "secondVideoMUG"
+    end if
+end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if press
         if key = "left"
             print "left clicked"
             if m.firstVideoMUG.hasFocus()
-                m.top.toParentData = {
+                parentDataDetails = {
                     "action": "moveScreen"
                     "direction": "original",
                     "component": "searchComponent",
                     "spaceToMove": 0
                 }
+                updateToParentData(parentDataDetails)
+                ' m.top.toParentData = {
+                '     "action": "moveScreen"
+                '     "direction": "original",
+                '     "component": "searchComponent",
+                '     "spaceToMove": 0
+                ' }
                 stopCountDown()
                 stopFirstVideo()
                 return false
             else if m.secondVideoMUG.hasFocus()
                 stopSecondVideo()
                 m.previousFocusedColumn = 0
-                m.top.toParentData = {
+                parentDataDetails = {
                     "action": "moveScreen"
                     "direction": "original",
                     "component": "searchComponent",
                     "spaceToMove": 0
                 }
-                m.firstVideoMUG.setFocus(true)
+                updateToParentData(parentDataDetails)
+                ' m.top.toParentData = {
+                '     "action": "moveScreen"
+                '     "direction": "original",
+                '     "component": "searchComponent",
+                '     "spaceToMove": 0
+                ' }
                 startCountDown()
+                setFocusToFirstVideo()
+                'm.firstVideoMUG.setFocus(true)
+                
                 playFirstVideo()
                 return true
 
@@ -550,9 +649,45 @@ function onKeyEvent(key as string, press as boolean) as boolean
                 stopFirstVideo()
                 stopCountDown()
                 m.secondVideoMUG.setFocus(true)
+                'm.secondVideoMUG.jumpToItem = 0
+                
                 return true
             end if
             return true
+        else if key = "up"
+            'to perform scroll for more functionality
+            handleWhenUpPressed()
+            if m.isFirstVideoPlaying
+                stopCountDown()
+                stopFirstVideo()
+            else if m.isSecondVideoPlaying
+                parentDataDetails = {
+                    "action": "moveScreen"
+                    "direction": "original",
+                    "component": "searchComponent",
+                    "spaceToMove": 0
+                }
+                updateToParentData(parentDataDetails)
+                stopSecondVideo()
+            end if
+            
+            return false
+        else if key = "down"
+            if m.firstVideoMUG.hasFocus()
+                stopCountDown()
+                stopFirstVideo()
+            else if m.secondVideoMUG.hasFocus()
+                parentDataDetails = {
+                    "action": "moveScreen"
+                    "direction": "original",
+                    "component": "searchComponent",
+                    "spaceToMove": 0
+                }
+                updateToParentData(parentDataDetails)
+                
+                stopSecondVideo()
+            end if
+            return false
         else if key="back"
             print "back pressed"
             if m.firstVideoMUG.hasFocus()
@@ -563,12 +698,19 @@ function onKeyEvent(key as string, press as boolean) as boolean
                 print "m.secondVideoMUG.hasFocus()"
                 m.previousFocusedColumn = 0
                 stopSecondVideo()
-                m.top.toParentData = {
+                parentDataDetails = {
                     "action": "moveScreen"
                     "direction": "original",
                     "component": "searchComponent",
                     "spaceToMove": 0
                 }
+                updateToParentData(parentDataDetails)
+                ' m.top.toParentData = {
+                '     "action": "moveScreen"
+                '     "direction": "original",
+                '     "component": "searchComponent",
+                '     "spaceToMove": 0
+                ' }
                 return false
             ' else if not m.secondVideoMUG.hasFocus() or not m.firstVideoMUG.hasFocus()
             '     PRINT "BACK FROM SEARCH COMP IS HANDLED"

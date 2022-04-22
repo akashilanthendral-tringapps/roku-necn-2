@@ -71,6 +71,7 @@ sub setContent()
     if m.action = "initialRendering"
         initialRendering()
     else if m.action = "playVideo"
+        initialRendering()
         playVideoOperation()
     else if m.action = "stopVideo"
         stopVideoOperation()
@@ -146,6 +147,8 @@ sub initialRendering()
 end sub
 
 sub playVideoOperation()
+    print "Inside: playVideoOperation()"
+    print "m.values: "m.values
  
     setBlackScreen(true)
     'setWhiteRectVisibility(true)
@@ -154,11 +157,8 @@ sub playVideoOperation()
     setYellowBorder(true)
     setVideoDurationDesc(false)
     setTimerLabelVisibility(true)
-    ' countDownControl("start")
-    print">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
     playVideo()
     setWatchNowLabelVisibility(true)
-    print">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
     setTimerLabelText(-1)
     
 end sub
@@ -217,6 +217,7 @@ sub stopVideo()
 end sub
 
 sub playVideo()
+    print "firstVideoComponent playVideo()"
     m.firstVideo.control = "play"
 end sub
 
@@ -231,7 +232,7 @@ function setVideo() as void
     m.firstVideo.control = "none"
     m.videoDurationDesc.text = m.firstVideoDuration
     'm.firstVideo.setFocus(true)
-   
+   print "END setVideo()"
 end function
 
 
