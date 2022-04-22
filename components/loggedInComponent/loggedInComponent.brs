@@ -56,8 +56,8 @@ sub removeYellow(itemUnfoc as object)
     itemUnfoc.setIconVisible = false
 end sub
 
-sub setLabelIconAndLabelOpacityWhenMUGIsUnfocused(itemFoc as integer, itemUnfoc as integer, boolValue as boolean)
-    if boolValue
+sub setLabelIconAndLabelOpacityWhenMUGIsUnfocused(itemFoc as integer, itemUnfoc as integer)
+    
         print "boolValue: true"
         item = m.leftMarkUpGridList.content.getChild(itemFoc)
         
@@ -76,7 +76,7 @@ sub setLabelIconAndLabelOpacityWhenMUGIsUnfocused(itemFoc as integer, itemUnfoc 
         unfocItem = m.leftMarkUpGridList.content.getChild(itemUnfoc)
         unfocItem.setIconVisible = false
         unfocItem.setNameVisible = 0.5
-    else
+    ' else
         print "boolValue: false"
         print "CALLED FROM ITEM UNFOCUSED"
         ' if m.unfocusedItemIndex = -1
@@ -93,7 +93,7 @@ sub setLabelIconAndLabelOpacityWhenMUGIsUnfocused(itemFoc as integer, itemUnfoc 
         unfocItem.setNameVisible = 0.5
         print "unfocItem: "unfocItem
 
-    end if
+    
 end sub
 
 sub setLabelIconAndLabelOpacity(itemFoc as integer, itemUnfoc as integer, boolValue as boolean)
@@ -413,28 +413,28 @@ sub scrollForMoreRenderComponent(compToRender as object)
 
 end sub
 
-sub setLabelIconAndLabelOpacityAfterScrollForMoreUp()
-    print "setLabelIconAndLabelOpacityAfterScrollForMoreUp() "
-    print "m.lastRenderedItemIndex: "m.lastRenderedItemIndex
-    UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
-    UnFocusedItem.setIconVisible = false
-    UnFocusedItem.setNameVisible = 0.5
+' sub setLabelIconAndLabelOpacityAfterScrollForMoreUp()
+'     print "setLabelIconAndLabelOpacityAfterScrollForMoreUp() "
+'     print "m.lastRenderedItemIndex: "m.lastRenderedItemIndex
+'     UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
+'     UnFocusedItem.setIconVisible = false
+'     UnFocusedItem.setNameVisible = 0.5
 
-    focusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex - 1)
-    focusedItem.setIconVisible = false 
-    focusedItem.setNameVisible = 1.0
-end sub
+'     focusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex - 1)
+'     focusedItem.setIconVisible = false 
+'     focusedItem.setNameVisible = 1.0
+' end sub
 
-sub setLabelIconAndLabelOpacityAfterScrollForMoreDown()
+' sub setLabelIconAndLabelOpacityAfterScrollForMoreDown()
 
-    print "m.lastRenderedItemIndex: "m.lastRenderedItemIndex
-    UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
-    UnFocusedItem.setIconVisible = false
-    UnFocusedItem.setNameVisible = 0.5
-    focusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex + 1) 
-    focusedItem.setIconVisible = false
-    focusedItem.setNameVisible = 1.0
-end sub
+'     print "m.lastRenderedItemIndex: "m.lastRenderedItemIndex
+'     UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
+'     UnFocusedItem.setIconVisible = false
+'     UnFocusedItem.setNameVisible = 0.5
+'     focusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex + 1) 
+'     focusedItem.setIconVisible = false
+'     focusedItem.setNameVisible = 1.0
+' end sub
 
 sub handleScrollForMoreUp()
     if getLastRenderedItem() = 0
@@ -443,7 +443,7 @@ sub handleScrollForMoreUp()
     indexOfItemToBeRendered = getLastRenderedItem() - 1
     item = m.leftMarkUpGridList.content.getChild(indexOfItemToBeRendered)
     compToRender = getComponent(item.componentName)
-    setLabelIconAndLabelOpacityWhenMUGIsUnfocused(indexOfItemToBeRendered, getLastRenderedItem(), true)
+    setLabelIconAndLabelOpacityWhenMUGIsUnfocused(indexOfItemToBeRendered, getLastRenderedItem())
     renderComponent(compToRender, "focused")
     compToRender.setFocus = true
     m.leftMarkUpGridList.jumpToItem = getLastRenderedItem()
@@ -469,7 +469,7 @@ sub handleScrollForMoreDown()
     indexOfItemToBeRendered = getLastRenderedItem() + 1
     item = m.leftMarkUpGridList.content.getChild(indexOfItemToBeRendered)
     compToRender = getComponent(item.componentName)
-    setLabelIconAndLabelOpacityWhenMUGIsUnfocused(indexOfItemToBeRendered, getLastRenderedItem(), true)
+    setLabelIconAndLabelOpacityWhenMUGIsUnfocused(indexOfItemToBeRendered, getLastRenderedItem())
     renderComponent(compToRender, "focused")
     compToRender.setFocus = true
     m.leftMarkUpGridList.jumpToItem = getLastRenderedItem()

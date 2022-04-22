@@ -127,6 +127,7 @@
     
       </LayoutGroup>
     </Rectangle>
+    
     <Poster 
       id="downArrow"
       width="70"
