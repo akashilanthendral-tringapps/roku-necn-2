@@ -6,8 +6,8 @@
     <script type="text/brightscript" uri="leftMarkUpGridListItemComponent.brs" />
     <children>
         <Group id="markUpGridItemContents">
-            <poster id="iconUri" translation="[75,10]"/>
-            <Label id="name" translation="[100, 25]" />
+            <poster id="iconUri" height="50" width="10" translation="[75,25]"/>
+            <Label id="name" translation="[100, 35]" />
         </Group>
     </children>
 </component>

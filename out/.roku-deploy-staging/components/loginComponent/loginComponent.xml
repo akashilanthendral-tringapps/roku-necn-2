@@ -6,14 +6,27 @@
 
   <children>
     <Rectangle width="1920" height="1080" color="#000000">
-      
-        <Group id="markUpGridGroup" translation="[800,300]">
-          <MarkupGrid vertFocusAnimationStyle="floatingFocus" numColumns="1" numRows="2" id="myList" itemComponentName="logInItemComponent" itemSpacing="[60,60]"  itemSize = "[ 300, 100 ]">
+      <poster width="1920" height="1080" uri="pkg:/images/separated/appBg.png" />
+
+        <Label 
+          id="signInTitle"
+          width="300"
+          height="100"
+          text="Please Sign In"
+          translation="[820, 250]"
+          color="#00bbba"
+          font="font:LargeBoldSystemFont"
+        />
+
+        <Group id="markUpGridGroup" translation="[580,360]">
+          <MarkupGrid vertFocusAnimationStyle="floatingFocus" numColumns="1" numRows="2" id="myList" itemComponentName="logInItemComponent" itemSpacing="[30,30]"  itemSize = "[ 780, 70 ]">
           </MarkupGrid>
-          <Label id="usernameOrPasswordWrong" text="" width="200" height="50" translation="[0,350]" />
-          <Button height="40" minWidth="200" maxWidth="200"  id="loginButton" focusedIconUri=" " iconUri=" " translation="[50, 450]">
-            <label height="40" vertAlign="center" color="#00BBBA" horizAlign="center" width="200" text="Log in"/>
+          <Label id="usernameOrPasswordWrong" color="#00bbba" text="" width="300" height="200" translation="[280,350]" wrap="true"/>
+
+          <Button height="90" minWidth="400"   id="loginButton" focusedIconUri=" " iconUri=" " translation="[180, 260]"  >
+            <label color="#00bbba" height="40" vertAlign="center"  horizAlign="center" width="200" text="Sign In" translation="[100, 20]"/>
           </Button>
+            
         </Group>
      
     </Rectangle>

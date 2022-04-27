@@ -5,21 +5,23 @@ sub init()
       m.loginButton.observeField("buttonSelected", "logIn")
       m.selectedItem = 0
       m.top.observeField("focusedChild", "setFocusToMyList")
+      m.signInTitle = m.top.findNode("signInTitle")
+      m.signInTitle.font.size = 42
       setLogInContent()
 end sub
 
 sub logIn()
 
     password = m.myList.content.getChild(1).texteditbox1
-
-    if password = "aaa"
+    username = m.myList.content.getChild(0).texteditbox1
+    if password = "aaa" and username = "akash"
         m.top.getScene().deleteBackStackArray = true
         m.top.getScene().logIn = true
         m.top.getScene().compToPush = "loggedInComponent"
 
     else
 
-        m.usernameOrPasswordWrong.text = "Password wrong"
+        m.usernameOrPasswordWrong.text = "Username or Password wrong"
 
     end if
 end sub
@@ -45,11 +47,11 @@ sub setLogInContent()
   
   contents = [
     {
-      "content1": "username",
+      "content1": "Username",
       "texteditbox1":""
     },
     {
-      "content1": "password",
+      "content1": "Password",
       "texteditbox1":""
     }
   ]

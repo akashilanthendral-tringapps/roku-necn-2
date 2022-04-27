@@ -9,35 +9,36 @@
     </interface>
     <children>
         
-        <LayoutGroup id="outerLayoutGroup" translation="[400, 100]" layoutDirection="horiz" itemSpacings="[50]">
-            <Rectangle id="firstVideoRectangle" translation="[0,0]" color="#9900cc" width="1000" height="1000">
+        <LayoutGroup id="outerLayoutGroup" translation="[400, 30]" layoutDirection="horiz" itemSpacings="[0]">
+            <!-- <Rectangle id="firstVideoRectangle" translation="[0,0]" color="#9900cc" width="1010" height="1000"> -->
                 <MarkupGrid id="firstVideoMUG" 
                     itemComponentName="firstVideoComponent"
                     numColumns="1"
                     numRows="1" 
-                    itemSize="[1030, 565.2]" 
-                    translation="[0,0]"
-                    itemSpacing="[100, 300]"
-                    drawFocusFeedback="false"
+                    itemSize="[1010, 575.2]" 
+                    translation="[5,0]"
+                    itemSpacing="[0,300]"
+                    drawFocusFeedback="false"  
                 />
                 <Timer 
                     id="startingCountDown"
                     duration="1"
                     repeat="true"
                 />
-            </Rectangle>
-            <Rectangle id="secondVideoRectangle" translation="[290, 410]" width="1015" height="630" color="#9900cc">
-                <MarkupGrid id="secondVideoMUG"
+            <!-- </Rectangle> -->
+            <!-- <Rectangle id="secondVideoRectangle" translation="[0,0]" width="1015" height="630" color="#9900cc"> -->
+                <MarkupGrid 
+                id="secondVideoMUG"
+                translation="[0,0]"
                 itemComponentName="secondVideoComponent"
                 numColumns="6"
                 numRows="2" 
-                itemSize="[325, 166.5625]" 
-                itemSpacing = "[25, 230]"
-                translation="[0, 10]"
+                itemSize="[325,166.5625]" 
+                itemSpacing = "[10,230]"
                 drawFocusFeedback="false"
                 vertFocusAnimationStyle="floatingFocus"
                 />
-            </Rectangle>
+            <!-- </Rectangle> -->
             
 
         </LayoutGroup>

@@ -6,6 +6,6 @@
         <field id="index" type="integer"/>
     </interface>
     <children>
-        <button text="Profile component" id="profileCompLabelValue"  focusedIconUri=" " iconUri=" " translation="[500,400]" maxWidth="100"/>
+        <button text="Profile component" id="profileCompLabelValue"  focusedIconUri=" " iconUri=" " translation="[700,400]" maxWidth="400"/>
     </children>
 </component>

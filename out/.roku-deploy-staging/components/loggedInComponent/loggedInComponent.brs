@@ -1,13 +1,18 @@
 sub init()
 
+    
     m.topRect = m.top.findNode("topRect")
-    m.topRectTranslations = ["[0,0]", "[-300,0]", "[-600,0]", "[0,0]", "[-300,0]", "[-600,0]"]
 
-    m.topRectAnimationRightMovingScreen = m.top.findNode("topRectAnimationRightMovingScreen")
-    m.topRectAnimationLeftMovingScreen = m.top.findNode("topRectAnimationLeftMovingScreen")
+    m.temperature = m.top.findNode("temperature")
+    m.weather = m.top.findNode("weather")
+    m.weather.font.size = 25
+    m.temperature.font.size = 40
 
-    m.topRectInterpRightMovingScreen = m.top.findNode("topRectInterpRightMovingScreen")
-    m.topRectInterpLeftMovingScreen = m.top.findNode("topRectInterpLeftMovingScreen")
+    m.layoutGroupAnimationRightMovingScreen = m.top.findNode("layoutGroupAnimationRightMovingScreen")
+    m.layoutGroupAnimationLeftMovingScreen = m.top.findNode("layoutGroupAnimationLeftMovingScreen")
+
+    m.layoutGroupInterpRightMovingScreen = m.top.findNode("layoutGroupInterpRightMovingScreen")
+    m.layoutGroupInterpLeftMovingScreen = m.top.findNode("layoutGroupInterpLeftMovingScreen")
 
     m.layoutGroupId = m.top.findNode("layoutGroupId")
 
@@ -41,15 +46,15 @@ sub init()
     m.previousComp = m.homeComponentId
     m.playButton.observeField("buttonSelected", "onPlayButtonSelected") 
 
+    m.scrollForMoreUp = m.top.findNode("scrollForMoreUp")
+    m.scrollForMoreDown = m.top.findNode("scrollForMoreDown")
+
     setLeftMarkUpGridItems()
     setHomeComponent()
 end sub
 
 sub onMarkUpGridUnfocused()
-    print "onMarkUpGridUnfocused()"
-
     setLabelIconAndLabelOpacity(-1, -1, false)
-    
 end sub
 
 sub removeYellow(itemUnfoc as object)
@@ -57,86 +62,40 @@ sub removeYellow(itemUnfoc as object)
 end sub
 
 sub setLabelIconAndLabelOpacityWhenMUGIsUnfocused(itemFoc as integer, itemUnfoc as integer)
-    
-        print "boolValue: true"
         item = m.leftMarkUpGridList.content.getChild(itemFoc)
-        
         item.setIconVisible = false
-
         item.setNameVisible = 1.0
-        print "item: "item
-
-        ' m.unfocusedItemIndex = m.leftMarkUpGridList.itemUnfocused
-        ' if m.unfocusedItemIndex = -1
-        '     return
-        ' end if
         if itemUnfoc = -1
             return
         end if
         unfocItem = m.leftMarkUpGridList.content.getChild(itemUnfoc)
         unfocItem.setIconVisible = false
         unfocItem.setNameVisible = 0.5
-    ' else
-        print "boolValue: false"
-        print "CALLED FROM ITEM UNFOCUSED"
-        ' if m.unfocusedItemIndex = -1
-        '     return
-        ' end if
-        ' m.unfocusedItem = m.leftMarkUpGridList.content.getChild(m.unfocusedItemIndex)
-        ' m.unfocusedItem.setIconVisible = false
-        ' m.unfocusedItem.setNameVisible = 0.5
-        if itemFoc = -1
-            return
-        end if
-        unfocItem = m.leftMarkUpGridList.content.getChild(itemFoc)
-        unfocItem.setIconVisible = false
-        unfocItem.setNameVisible = 0.5
-        print "unfocItem: "unfocItem
-
-    
 end sub
 
 sub setLabelIconAndLabelOpacity(itemFoc as integer, itemUnfoc as integer, boolValue as boolean)
-    print "setLabelIconAndLabelOpacity()"
     if boolValue
-        print "boolValue: true"
         item = m.leftMarkUpGridList.content.getChild(itemFoc)
-        
         item.setIconVisible = true
-
         item.setNameVisible = 1.0
-        print "item: "item
-
-        ' m.unfocusedItemIndex = m.leftMarkUpGridList.itemUnfocused
-        ' if m.unfocusedItemIndex = -1
-        '     return
-        ' end if
         if itemUnfoc = -1
+            'If the focus comes to the list for first time, there is no previous item that had focus.
+            'So, we need not set the icon visibility to false and change the opacity of the name.
             return
         end if
         unfocItem = m.leftMarkUpGridList.content.getChild(itemUnfoc)
         unfocItem.setIconVisible = false
         unfocItem.setNameVisible = 0.5
     else
-        print "boolValue: false"
-        print "CALLED FROM ITEM UNFOCUSED"
-        ' if m.unfocusedItemIndex = -1
-        '     return
-        ' end if
-        ' m.unfocusedItem = m.leftMarkUpGridList.content.getChild(m.unfocusedItemIndex)
-        ' m.unfocusedItem.setIconVisible = false
-        ' m.unfocusedItem.setNameVisible = 0.5
         if itemFoc = -1
+            'If the focus comes to the list for first time, there is no previous item that had focus.
+            'So, we need not set the icon visibility to false and change the opacity of the name.
             return
         end if
         unfocItem = m.leftMarkUpGridList.content.getChild(itemFoc)
         unfocItem.setIconVisible = false
         unfocItem.setNameVisible = 0.5
-        print "unfocItem: "unfocItem
-
     end if
-    print "END setLabelIconAndLabelOpacity()"
-    print "...................."
 end sub
 
 function getUnfocusedItemIndex() as Integer
@@ -159,50 +118,65 @@ function getFocusedItem() as object
     return focusedItem
 end function
 
-sub handleOnMarkUpGridFocused(itemIndex)
-    print "handleOnMarkUpGridFocused()"
+sub handleOnMarkUpGridFocused()
+   
     setLabelIconAndLabelOpacity(getFocusedItemIndex(), getUnfocusedItemIndex(), true)
     focusedItem = getFocusedItem()
-    if not focusedItem.name = "Sign out"
+    if focusedItem.name = "Sign out"
+        m.previousComp.visible = false
+    else 
         compToRender = getComponent(focusedItem.componentName)
         renderComponent(compToRender, "focused")
     end if
-
 end sub
 
-sub setLastFocusedItemIndex(i as integer)
-    m.lastFocusedItemIndex = i
-end sub
+' sub setLastFocusedItemIndex(i as integer)
+'     m.lastFocusedItemIndex = i
+' end sub
 
-function getLastFocusedItemIndex() as integer
-    return m.lastFocusedItemIndex
-end function
+' function getLastFocusedItemIndex() as integer
+'     return m.lastFocusedItemIndex
+' end function
+
+sub setScrollForMoreLabel()
+    i = m.lastRenderedItemIndex
+    if i = 0
+        setTopScrollForMoreLabel(false)
+        setBottomScrollForMoreLabel(true)
+    else if getFocusedItemIndex() = 4
+        setTopScrollForMoreLabel(true)
+        setBottomScrollForMoreLabel(false)
+    else
+        setTopScrollForMoreLabel(true)
+        setBottomScrollForMoreLabel(true) 
+    end if
+end sub
 
 sub onMarkUpGridFocused()
-    print "onMarkUpGridFocused()"
-    i = getFocusedItemIndex()
-    setLastFocusedItemIndex(i)
-    handleOnMarkUpGridFocused(i)
+
+    setScrollForMoreLabel() 'If the item focused is last item in the list (Sign out)
+    ' i = getFocusedItemIndex()
+    ' setLastFocusedItemIndex(i)
+    handleOnMarkUpGridFocused()
 end sub
 
 sub setHomeComponent()
-    print "setHomeComponent()"
+
     m.lastRenderedItemIndex = 0
     m.previousComp = m.homeComponentId
     m.previousComp.visible = true
     m.previousComp.setFocus = true
-    print "END setHomeComponent()"
+    setScrollForMoreLabel()
 end sub
 
 sub onMarkUpGridSelected()
     
     selectedItemIndex = m.leftMarkUpGridList.itemSelected
     m.selectedItemOfLeftMarkUpGrid = selectedItemIndex
-    print "selected item: "m.selectedItemOfLeftMarkUpGrid 
-
     selectedItem = getSelectedItem()
     selectedItem.setIconVisible = false 
     if selectedItem.name = "Sign out"
+        m.previousComp.visible = false
         onLogoutButtonSelected()
     else 
         compToRender = getComponent(selectedItem.componentName)
@@ -226,10 +200,8 @@ end function
 
 
 sub renderComponent(compToRender as object, operationPerformed as String)
-    print "renderComponent()"
-    print "compToRender: "compToRender
+    m.selectedItemOfLeftMarkUpGrid = compToRender.index
     m.lastRenderedItemIndex =  compToRender.index
-   
     if operationPerformed = "selected"
         compToRender.setFocus = true
     else
@@ -237,7 +209,7 @@ sub renderComponent(compToRender as object, operationPerformed as String)
         m.previousComp = compToRender
         compToRender.visible = true
     end if
-    print "END of rendercomponent()"
+    setScrollForMoreLabel()
 end sub
 
 sub renderLiveComponent()
@@ -251,31 +223,31 @@ sub setLeftMarkUpGridItems()
     m.markUpGridItemContents = [
         {
             "name": "Home",
-            "iconUri": "pkg:/images/separated/sideBarIcon.png",
+            "iconUri": "pkg:/images/separated/sideBarIcon2.png",
             ' "iconUri": "pkg:/images/separated/homeIconColored.png",
             "componentName": "homeComponentId"            
         },
         {
-            "name": "Search",
-            "iconUri": "pkg:/images/separated/sideBarIcon.png",
+            "name": "Top News",
+            "iconUri": "pkg:/images/separated/sideBarIcon2.png",
             ' "iconUri": "pkg:/images/separated/searchIconBlue2.png",
             "componentName": "searchComponentId"
         },
         {
             "name": "Profile",
-            "iconUri": "pkg:/images/separated/sideBarIcon.png",
+            "iconUri": "pkg:/images/separated/sideBarIcon2.png",
             ' "iconUri": "pkg:/images/separated/profileIcon.png",
             "componentName": "profileComponentId"
         },
         {
-            "name": "Live",
-            "iconUri": "pkg:/images/separated/sideBarIcon.png",
+            "name": "Shows",
+            "iconUri": "pkg:/images/separated/sideBarIcon2.png",
             ' "iconUri": "pkg:/images/separated/liveIcon.png",
             "componentName": "timeGridComponentId"
         },
         {
             "name": "Sign out",
-            "iconUri": "pkg:/images/separated/sideBarIcon.png",
+            "iconUri": "pkg:/images/separated/sideBarIcon2.png",
             ' "iconUri": "pkg:/images/separated/signoutIcon.png",
             "componentName": "signOutComponent"
         }
@@ -315,8 +287,6 @@ end sub
 
 
 sub handleFromChildData()
-    print "handleFromChildData()"
-    print "m.selectedItemOfLeftMarkUpGrid: "m.selectedItemOfLeftMarkUpGrid
     if m.selectedItemOfLeftMarkUpGrid = 0
         m.playButton.setFocus(true)
     else if m.selectedItemOfLeftMarkUpGrid = 1
@@ -324,32 +294,34 @@ sub handleFromChildData()
     else 
         m.leftMarkUpGridList.setFocus(true)
     end if
-    
+end sub
+
+sub setTopScrollForMoreLabel(visibility)
+    m.scrollForMoreUp.visible = visibility
+end sub
+
+sub setBottomScrollForMoreLabel(visibility)
+    m.scrollForMoreDown.visible = visibility
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if press
         if key = "right"
-            print "Right key pressed"
             if m.leftMarkUpGridList.hasFocus()
-                print "m.leftMarkUpGridList.hasFocus(): "m.leftMarkUpGridList.hasFocus()
-                if m.lastRenderedItemIndex = 4
-                    m.leftMarkUpGridList.setFocus(true)
+                print " m.lastRenderedItemIndex: " m.lastRenderedItemIndex
+                if getFocusedItemIndex() = 4
                     return true
                 end if
+                
                 m.selectedItemOfLeftMarkUpGrid = m.leftMarkUpGridList.itemFocused
                 itemFoc = m.leftMarkUpGridList.content.getChild(m.leftMarkUpGridList.itemFocused)
                 itemFoc.setIconVisible = false
                 m.lastRenderedItemIndex =  m.previousComp.index
                 m.previousComp.setFocus = true
-                'm.selectedItemOfLeftMarkUpGrid = m.leftMarkUpGridList.itemFocused
-
                 return true
             end if
         else if key = "left"
-            print "left pressed"
              if m.playButton.hasFocus()
-                print "m.playButton.hasFocus()"
                 m.playButton.setFocus(false)
                 m.leftMarkUpGridList.setFocus(true)
                 return true
@@ -357,10 +329,8 @@ function onKeyEvent(key as string, press as boolean) as boolean
                 m.leftMarkUpGridList.setFocus(true)
                 return true
             else
-                print "else part handled"
                 m.leftMarkUpGridList.setFocus(true)
             end if
-        
         else if key = "back"
             if m.leftMarkUpGridList.hasFocus()
                 return true
@@ -368,16 +338,17 @@ function onKeyEvent(key as string, press as boolean) as boolean
             m.leftMarkUpGridList.setFocus(true)
             return true
         else if key = "up"
-            print "key = up"
+         
             if not m.leftMarkUpGridList.hasFocus()
-                print "loggedincomponent: handleScrollForMoreUp() is called!!!"
+                
+                moveScreen("original", 0)
                 handleScrollForMoreUp()
                 return true
             end if
         else if key = "down"
-            print "key = down"
             if not m.leftMarkUpGridList.hasFocus()
-                print "loggedincomponent: handleScrollForMoreDown() is called!!!"
+                
+                moveScreen("original", 0)
                 if m.lastRenderedItemIndex = 3
                     m.leftMarkUpGridList.jumpToItem = 4
                     UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
@@ -398,44 +369,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
     end if
 end function
 
-sub scrollForMoreRenderComponent(compToRender as object)
-
-    print "scrollForMoreRenderComponent()"
-    print "compToRender: "compToRender
-    print "previous comp: "m.previousComp
-    'm.previousComp.setFocus = false
-    m.previousComp.visible = false
-    m.previousComp = compToRender
-    m.lastRenderedItemIndex = compToRender.index
-    compToRender.visible = true
-    compToRender.setFocus = true
-    m.leftMarkUpGridList.jumpToItem = compToRender.index
-
-end sub
-
-' sub setLabelIconAndLabelOpacityAfterScrollForMoreUp()
-'     print "setLabelIconAndLabelOpacityAfterScrollForMoreUp() "
-'     print "m.lastRenderedItemIndex: "m.lastRenderedItemIndex
-'     UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
-'     UnFocusedItem.setIconVisible = false
-'     UnFocusedItem.setNameVisible = 0.5
-
-'     focusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex - 1)
-'     focusedItem.setIconVisible = false 
-'     focusedItem.setNameVisible = 1.0
-' end sub
-
-' sub setLabelIconAndLabelOpacityAfterScrollForMoreDown()
-
-'     print "m.lastRenderedItemIndex: "m.lastRenderedItemIndex
-'     UnFocusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex)
-'     UnFocusedItem.setIconVisible = false
-'     UnFocusedItem.setNameVisible = 0.5
-'     focusedItem = m.leftMarkUpGridList.content.getChild(m.lastRenderedItemIndex + 1) 
-'     focusedItem.setIconVisible = false
-'     focusedItem.setNameVisible = 1.0
-' end sub
-
 sub handleScrollForMoreUp()
     if getLastRenderedItem() = 0
         return
@@ -445,22 +378,14 @@ sub handleScrollForMoreUp()
     compToRender = getComponent(item.componentName)
     setLabelIconAndLabelOpacityWhenMUGIsUnfocused(indexOfItemToBeRendered, getLastRenderedItem())
     renderComponent(compToRender, "focused")
+    setScrollForMoreLabel()
     compToRender.setFocus = true
     m.leftMarkUpGridList.jumpToItem = getLastRenderedItem()
-    ' print "handleScrollForMoreUp()"
-    ' if m.lastRenderedItemIndex = 0
-    '     return
-    ' else
-    '     focusedItemInMUG = m.leftMarkUpGridList.content.getChild( m.lastRenderedItemIndex - 1)
-    '     compToRender = getComponent(focusedItemInMUG.componentName)
-    ' end if
-    ' setLabelIconAndLabelOpacityAfterScrollForMoreUp()
-    ' scrollForMoreRenderComponent(compToRender)
 end sub
 
 
 sub handleScrollForMoreDown()
-    print "handleScrollForMoreDown()"
+    
     
     if getLastRenderedItem() = 3
         setFocusToSignOut()
@@ -471,14 +396,13 @@ sub handleScrollForMoreDown()
     compToRender = getComponent(item.componentName)
     setLabelIconAndLabelOpacityWhenMUGIsUnfocused(indexOfItemToBeRendered, getLastRenderedItem())
     renderComponent(compToRender, "focused")
+    setScrollForMoreLabel()
     compToRender.setFocus = true
     m.leftMarkUpGridList.jumpToItem = getLastRenderedItem()
 end sub
 
 sub setFocusToSignOut()
-    print "setFocusToSignOut()"
     m.leftMarkUpGridList.jumpToItem = 4
-    print "END setFocusToSignOut()"
 end sub
 
 function getLastRenderedItem()
@@ -486,13 +410,9 @@ function getLastRenderedItem()
 end function
 
 sub handleToParentData(event)
-    print "hanldeToParentData INside: LOggedInComponent"
     dataFromChild = event.getData()
     if dataFromChild.action = "componentCreation"
-        print "Inside component creation IF statement"
         m.top.toChildData = dataFromChild.pageData
-        print "dataFromChild.pageData: "dataFromChild.pageData
-        print "dataFromChild.componentName: "dataFromChild.componentName
         m.top.getScene().compToPush = dataFromChild.componentName
     else if dataFromChild.action = "moveScreen"
         if dataFromChild.component = "searchComponent"
@@ -503,23 +423,20 @@ sub handleToParentData(event)
 end sub
 
 sub moveScreen(direction, spaceToMove)
-    print "moveScreen()"
-    print "direction: "direction
-    print "spaceToMove: "spaceToMove
-    xCoordinate = m.topRect.translation[0]
+    xCoordinate = m.layoutGroupId.translation[0]
     if direction = "right"
         
-        m.topRectInterpRightMovingScreen.keyValue = [[xCoordinate, 100], [xCoordinate-spaceToMove, 100]]
-        m.topRectAnimationRightMovingScreen.control = "start"
+        m.layoutGroupInterpRightMovingScreen.keyValue = [[xCoordinate, 130], [xCoordinate-spaceToMove, 130]]
+        m.layoutGroupAnimationRightMovingScreen.control = "start"
         
     else if direction="left"
         
-        m.topRectInterpLeftMovingScreen.keyValue = [[xCoordinate, 100], [xCoordinate+spaceToMove, 100]]
-        m.topRectAnimationLeftMovingScreen.control = "start"
+        m.layoutGroupInterpLeftMovingScreen.keyValue = [[xCoordinate, 130], [xCoordinate+spaceToMove, 130]]
+        m.layoutGroupAnimationLeftMovingScreen.control = "start"
 
     else
-        m.topRectInterpLeftMovingScreen.keyValue = [[xCoordinate, 100], [0, 100]]
-        m.topRectAnimationLeftMovingScreen.control = "start"
+        m.layoutGroupInterpLeftMovingScreen.keyValue = [[xCoordinate, 130], [-25, 130]]
+        m.layoutGroupAnimationLeftMovingScreen.control = "start"
     end if
     
 end sub

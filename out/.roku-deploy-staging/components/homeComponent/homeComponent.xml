@@ -6,7 +6,7 @@
         <field id="index" type="integer"/>
     </interface>
     <children>
-        <group id="buttonGroup" translation="[900,420]">
+        <group id="buttonGroup" translation="[850,420]">
             <Button id="playButton" minWidth="60"  text="Play"  focusedIconUri=" " iconUri=" "/>
         </group>
     </children>

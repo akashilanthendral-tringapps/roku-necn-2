@@ -1,142 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component name="loggedInComponent" extends="commonFields" initialFocus="playButton">
   <children>
-    <Rectangle id="outerRect" translation="[0,0]" width="1920" height="1080" color="#9900cc">
-
-    <Poster 
-      id="necnLogo"
-      width="150"
-      height="50"
-      uri="pkg:/images/separated/necnLogo.png"
-      translation="[50, 50]"
-    />
-    <Poster 
-      id="upArrow"
-      width="100"
-      height="100"
-      uri="pkg:/images/separated/upArrow.png"
-      translation="[900, 50]"
-    />
     
-
-    <Rectangle id="topRect" translation="[0,100]" width="1920" height="1080" color="">
+    <!-- <Rectangle id="outerRect" translation="[0,0]" width="1920" height="1080" color="#000000"> -->  
+    <Rectangle id="topRect" translation="[0,0]" width="1920" height="1080" >
+      
       <Animation 
 
-        id="topRectAnimationLeftMovingScreen"
+        id="layoutGroupAnimationLeftMovingScreen"
         duration="0.25"
         easeFunction="linear">
         <Vector2dFieldInterpolator 
-          id="topRectInterpLeftMovingScreen"
+          id="layoutGroupInterpLeftMovingScreen"
           key="[0.0, 1.0]"
           keyValue="[[]]"
-          fieldToInterp="topRect.translation"
+          fieldToInterp="layoutGroupId.translation"
         />
       </Animation>
       <Animation 
 
-        id="topRectAnimationRightMovingScreen"
+        id="layoutGroupAnimationRightMovingScreen"
         duration="0.25"
         easeFunction="linear">
         <Vector2dFieldInterpolator 
-          id="topRectInterpRightMovingScreen"
+          id="layoutGroupInterpRightMovingScreen"
           key="[0.0, 1.0]"
           keyValue="[[]]"
-          fieldToInterp="topRect.translation"
+          fieldToInterp="layoutGroupId.translation"
         />
       </Animation>
-        
+      
+      <poster
+        id="beachBg"
+        uri="pkg:/images/separated/beachBg.jpg"
+        width="4000"
+        height="1080"
+        translation="[0,0]"
+        visible="true"
+      >
+      <poster
+        id="appBg"
+        width="4000"
+        height="1080"
+        translation="[0,0]"
+        uri="pkg:/images/separated/appBg.png"
+        visible="true"
+      >
   
-      <LayoutGroup id="layoutGroupId" layoutDirection="horiz" horizAlignment="left" translation="[-15,0]" itemSpacings="[200, 300]">
-
-        <Rectangle translation="[0,0]" width="5000" height="1080" color="#9900cc" >
-    
-            
-              <group id="markUpGridGroup" translation="[0,0]">
-                <MarkupGrid
-                translation="[5,100]"
-                vertFocusAnimationStyle="floatingFocus"
-                numColumns="1"
-                numRows="5"
-                id="leftMarkUpGridList"
-                itemComponentName="leftMarkUpGridListItemComponent" 
-                itemSpacing="[0, 40]"
-                itemSize = "[ 240, 100 ]"
-                drawFocusFeedback="true"
-                />
-                <Animation 
-                  id = "leftMarkUpGridListAnimation" 
-                  duration = "0.5"
-                  easeFunction = "linear" >
-                  <Vector2DFieldInterpolator 
-                    key = "[ 0.0, 0.5, 1.0 ]" 
-                    keyValue = "[ [ 100, 100 ], [150,100], [240, 100] ]" 
-                    fieldToInterp = "leftMarkUpGridList.itemSize" />
-                </Animation>
-      
-                <Animation 
-                    id = "leftMarkUpGridListAnimationWhenUnfocused" 
-                    duration = "0.5" 
-                    easeFunction = "linear" >
-                    <Vector2DFieldInterpolator 
-                      key = "[ 0.0, 0.5, 1.0 ]" 
-                      keyValue = "[ [240, 100], [150,100], [ 100, 100 ]]" 
-                      fieldToInterp = "leftMarkUpGridList.itemSize"
-                    />
-                </Animation>
-      
-                <!-- <Animation 
-                  id = "markUpGridBackgroundWhenFocused" 
-                  duration = "0.25" 
-                  easeFunction = "linear" >
-                  <FloatFieldInterpolator 
-                    key = "[ 0.0, 0.5, 1.0 ]" 
-                    keyValue = "[ [105], [150], [250] ]" 
-                    fieldToInterp = "markUpGridBackground.width"
-                  />
-                </Animation>
-      
-                <Animation 
-                    id = "markUpGridBackgroundWhenUnfocused"
-                    duration = "0.25" 
-                    easeFunction = "linear" >
-                    <FloatFieldInterpolator 
-                      key = "[ 0.0, 0.5, 1.0 ]" 
-                      keyValue = "[ [250], [150], [105] ]" 
-                      fieldToInterp = "markUpGridBackground.width"
-                    />
-                </Animation> -->
-              </group>
+      <LayoutGroup id="layoutGroupId" layoutDirection="horiz" horizAlignment="left" translation="[-25,130]" itemSpacings="[0, 0]">
+        <!-- <Rectangle translation="[0,-100]" width="5000" height="1080" > -->
               
-            
-    
-          <Rectangle translation="[0, 0]">        
-            <group id="homeComponentGroupId" visible="true" translation="[0,0]">
-              <homeComponent id="homeComponentId" />
-            </group>
-            <group id="searchComponentGroupId">
-              <searchComponent id="searchComponentId" visible="false" translation="[0,0]"/>
-            </group>
-            <group id="profileComponentGroupId">
-              <profileComponent id="profileComponentId" visible="false" translation="[0,0]"/>
-            </group>
-            <group id="timeGridComponentGroupId">
-              <timeGridComponent id="timeGridComponentId" visible="false" translation="[250,300]"/>
-            </group>
-          </Rectangle>
+         
+      
+        <group id="markUpGridGroup" translation="[100,100]">
+          <MarkupGrid
+          translation="[0,100]"
+          vertFocusAnimationStyle="floatingFocus"
+          numColumns="1"
+          numRows="5"
+          id="leftMarkUpGridList"
+          itemComponentName="leftMarkUpGridListItemComponent" 
+          itemSpacing="[0, 40]"
+          itemSize = "[ 260, 100 ]"
+          drawFocusFeedback="false"
+          />
+        <!-- <Animation 
+          id = "leftMarkUpGridListAnimation" 
+          duration = "0.5"
+          easeFunction = "linear" >
+          <Vector2DFieldInterpolator 
+            key = "[ 0.0, 0.5, 1.0 ]" 
+            keyValue = "[ [ 100, 100 ], [150,100], [240, 100] ]" 
+            fieldToInterp = "leftMarkUpGridList.itemSize" />
+        </Animation>
+
+        <Animation 
+            id = "leftMarkUpGridListAnimationWhenUnfocused" 
+            duration = "0.5" 
+            easeFunction = "linear" >
+            <Vector2DFieldInterpolator 
+              key = "[ 0.0, 0.5, 1.0 ]" 
+              keyValue = "[ [240, 100], [150,100], [ 100, 100 ]]" 
+              fieldToInterp = "leftMarkUpGridList.itemSize"
+            />
+        </Animation> -->
+
+        <!-- <Animation 
+          id = "markUpGridBackgroundWhenFocused" 
+          duration = "0.25" 
+          easeFunction = "linear" >
+          <FloatFieldInterpolator 
+            key = "[ 0.0, 0.5, 1.0 ]" 
+            keyValue = "[ [105], [150], [250] ]" 
+            fieldToInterp = "markUpGridBackground.width"
+          />
+        </Animation>
+
+        <Animation 
+            id = "markUpGridBackgroundWhenUnfocused"
+            duration = "0.25" 
+            easeFunction = "linear" >
+            <FloatFieldInterpolator 
+              key = "[ 0.0, 0.5, 1.0 ]" 
+              keyValue = "[ [250], [150], [105] ]" 
+              fieldToInterp = "markUpGridBackground.width"
+            />
+        </Animation> -->
+        </group>
+        <Rectangle translation="[0, 0]">        
+          <group id="homeComponentGroupId" visible="true" translation="[-250, -100]">
+            <homeComponent id="homeComponentId" />
+          </group>
+          <group id="searchComponentGroupId">
+            <searchComponent id="searchComponentId" visible="false" translation="[-200,0]"/>
+          </group>
+          <group id="profileComponentGroupId">
+            <profileComponent id="profileComponentId" visible="false" translation="[-250, -100]"/>
+          </group>
+          <group id="timeGridComponentGroupId">
+            <timeGridComponent id="timeGridComponentId" visible="false" translation="[100,200]"/>
+          </group>
         </Rectangle>
-    
       </LayoutGroup>
-    </Rectangle>
+      </poster>
+      </poster>
+
+      <Poster 
+        id="necnLogo2"
+        width="250"
+        height="80"
+        uri="pkg:/images/separated/necnLogo2.png"
+        translation="[90, 50]"
+      />
+      <Label
+        id="temperature"
+        width="100"
+        height="100"
+        translation="[1650, 50]"
+        text="33C"
+      />
+      <Label
+        id="weather"
+        width="150"
+        height="100"
+        translation="[1620, 90]"
+        text="CLOUDY"
+      />
+
     
-    <Poster 
-      id="downArrow"
-      width="70"
-      height="70"
-      uri="pkg:/images/separated/downArrow.png"
-      translation="[930, 900]"
-    />
+      <Poster 
+        id="weatherImage"
+        width="70"
+        height="70"
+        uri="pkg:/images/separated/sunny.png"
+        translation="[1770, 50]"
+      />
+      <Poster 
+        id="upArrow"
+        width="40"
+        height="40"
+        uri="pkg:/images/separated/upArrow2.png"
+        translation="[930, 5]"
+      />
   </Rectangle>
-  </children>
+  <label 
+    id="scrollForMoreUp"
+    text="Scroll for more"
+    width="250"
+    height="80"
+    translation="[830, 40]"
+    opacity="0.5"
+    visible="true"
+  />
+  <label 
+    id="scrollForMoreDown"
+    text="Scroll for more"
+    width="250"
+    height="80"
+    translation="[830, 1030]"
+    opacity="0.5"
+    visible="true"
+  />
+  <Poster 
+    id="downArrow"
+    width="40"
+    height="40"
+    uri="pkg:/images/separated/downArrow3.png"
+    translation="[930, 1050]"
+  />
+  <!-- </Rectangle>   -->
+</children>
   
-  <script type="text/brightscript" uri="loggedInComponent.brs" />
+<script type="text/brightscript" uri="loggedInComponent.brs" />
 </component>

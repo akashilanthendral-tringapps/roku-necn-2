@@ -1,9 +1,8 @@
 sub init()
-
-    print "init() of SEARCH component"
-    print "m.top: "m.top
     m.top.observeField("visible", "onVisibilityChanged")
 
+    ' m.isUpKeyPressed = false
+    ' m.isDownKeyPressed = false
     'If first time firstVideoMUG gets focus
     m.isFirstTimeFirstVideoMUGGetsFocus = true
 
@@ -27,18 +26,16 @@ sub init()
 
     m.outerLayoutGroup = m.top.findNode("outerLayoutGroup")
 
-    m.isFirstVideoEnlarged = false
-    m.isSecondVideoEnlarged = false
     m.isFirstTimeFirstVideoMUGGotFocused = true
     m.isFirstTimeInsideOnSecondVideoMUGFocused = true
 
     'For handling onSecondVideoMUGFocused()
-    m.isFirstTimeInsideOnSecondVideoMUGFocused = true
-    m.totalScreenWidth = 1920
-    m.totalWidthOccByFirstMUG = m.firstVideoMUG.itemSize[0] + m.outerLayoutGroup.itemSpacings[0]
+    'm.isFirstTimeInsideOnSecondVideoMUGFocused = true
+    ' m.totalScreenWidth = 1920
+    ' m.totalWidthOccByFirstMUG = m.firstVideoMUG.itemSize[0] + m.outerLayoutGroup.itemSpacings[0]
     
-    m.totalWidthOccBySecondMUG = m.totalScreenWidth - m.outerLayoutGroup.translation[0] - m.totalWidthOccByFirstMUG
-    m.minWidthOfSecondMUGWhereNoTranslation = m.totalWidthOccBySecondMUG
+    ' m.totalWidthOccBySecondMUG = m.totalScreenWidth - m.outerLayoutGroup.translation[0] - m.totalWidthOccByFirstMUG
+    ' m.minWidthOfSecondMUGWhereNoTranslation = m.totalWidthOccBySecondMUG
 
     m.sizeOfAnItem = m.secondVideoMUG.itemSpacing[0] + m.secondVideoMUG.itemSize[0]
     m.sizeOfNextVideoToBeVisible = 50
@@ -71,86 +68,59 @@ sub onTimerFired()
     m.countDownValue = m.countDownValue - 1
 
     if m.countDownValue = -1
-        print " if m.countDownValue = -1"
         stopCountDown()
-        'stopFirstVideo()
         m.gridItemSelected = "firstVideoMUG"
         parentDataDetails = {
             "action": "componentCreation",
             "componentName": "fullScreenVideoComponent"
             "pageData": "firstVideoPageData"
-            
         }
         updateToParentData(parentDataDetails)
-        ' m.top.toParentData = {
-        '     "action": "componentCreation",
-        '     "componentName": "fullScreenVideoComponent"
-        '     "pageData": getFirstVideoPageData()
-            
-        ' }
     end if
 end sub
 
-' sub onVisibilityChanged()
-'     if m.top.visible = true
-       
-'     end if
-' end sub
-
 sub onFirstVideoMUGUnfocused()
-    print "onFirstVideoMUGUnfocused(): "
-    print "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
-    ' m.firstVideoChildContent.setBgi= true
     stopCountDown()
     stopFirstVideo()
 end sub
 
 sub onSecondVideoMUGUnfocused()
-   
-    print "onSecondVideoMUGUnfocused()"
-    ' m.lastFocusedItemOfSecondVideo.secondTimeRenderingSecondVideo = {
-    '     "isSecondTime" : true,
-    '     "control": "stop"
-    ' }
+
     m.previousFocusedColumn = m.secondVideoMUG.itemUnfocused
-    print "...................."
-    print "m.previousFocusedColumn: "m.previousFocusedColumn
+
     if m.previousFocusedColumn >= m.secondVideoMUG.numColumns
-        m.previousFocusedColumn = m.previousFocusedColumn mod m.secondVideoMUG.numColumns
+        m.previousFocusedColumn = m.previousFocusedColumn - m.secondVideoMUG.numColumns
     end if
-    print "...................."
-    print "m.previousFocusedColumn: "m.previousFocusedColumn
+
     stopSecondVideo()
 end sub
 
 sub onFirstVideoMUGFocused()
-    print "onFirstVideoMUGFocused()"
-    'm.isPreviouslyFirstVideoMUGFocused = true
     playFirstVideo()
 end sub
 
 sub onSecondVideoMUGFocused()
-
-    print "onSecondVideoMUGFocused()"
-    print "m.secondVideoMUG.change: "m.secondVideoMUG.change
-    'm.isPreviouslySecondVideoMUGFocused = true
     if m.isSecondVideoSelected
-        ' This condition is to check if the second video is selected and the video is
-        ' played in the full screen and back is pressed, then the translation should work correctly
         m.isSecondVideoSelected = false
         return
+        'If the video in secondVideoMUG is selected, it plays in full screen. After that,
+        ' when back key is pressed, again the video gets focus and the translation 
+        'occurs which should not be because, in the beginning, when the video gets focus,
+        ' the translation has already occurred. So, it should not occur again. So, without the 
+        ' translation getting done, this function returns control.
     end if
-    m.focusedItemIndex = m.secondVideoMUG.itemFocused
+    
     if m.isFirstTimeInsideOnSecondVideoMUGFocused
         m.isFirstTimeInsideOnSecondVideoMUGFocused = false
-        m.previousFocusedColumn = m.focusedItemIndex
+        m.previousFocusedColumn = 0
     end if
 
+    m.focusedItemIndex = m.secondVideoMUG.itemFocused
     m.focusedItem = m.secondVideoMUG.content.getChild(m.focusedItemIndex)
     m.lastFocusedItemOfSecondVideo = m.focusedItem  
     focusedCol = m.secondVideoMUG.currFocusColumn
     m.spaceToMove = 0
-
+    
     if m.secondVideoMUG.horizFocusDirection = "right"
         m.spaceToMove = m.sizeOfAnItem * (focusedCol - m.previousFocusedColumn)
         parentDataDetails = {
@@ -160,12 +130,6 @@ sub onSecondVideoMUGFocused()
             "spaceToMove": m.spaceToMove
         }
         updateToParentData(parentDataDetails)
-        ' m.top.toParentData = {
-        '     "action": "moveScreen",
-        '     "component": "searchComponent"
-        '     "direction": "right",
-        '     "spaceToMove": m.spaceToMove
-        ' }
     else if m.secondVideoMUG.horizFocusDirection = "left"
         
         m.spaceToMove = m.sizeOfAnItem * (m.previousFocusedColumn - focusedCol)
@@ -176,19 +140,22 @@ sub onSecondVideoMUGFocused()
             "spaceToMove": m.spaceToMove
         }
         updateToParentData(parentDataDetails)
-        ' m.top.toParentData = {
-        '     "action": "moveScreen",
-        '     "component": "searchComponent"
-        '     "direction": "left",
-        '     "spaceToMove": m.spaceToMove
-        ' }
     else if m.secondVideoMUG.horizFocusDirection = "none"
-        
+
+        ' if m.isUpKeyPressed or m.isDownKeyPressed
+        '     m.isUpKeyPressed = false
+        '     m.isDownKeyPressed = false
+        '     return
+        ' end if
+
         if m.secondVideoMUG.hasFocus()
             
             if m.previousFocusedColumn <> focusedCol
                 
                 if m.previousFocusedColumn - focusedCol > 0
+                    print "m.previousFocusedColumn - focusedCol > 0"
+                    print "m.previousFocusedColumn: "m.previousFocusedColumn
+                    print "focusedCol: "focusedCol
                     m.spaceToMove = m.sizeOfAnItem * (m.previousFocusedColumn - focusedCol)
                     parentDataDetails = {
                         "action": "moveScreen",
@@ -197,13 +164,10 @@ sub onSecondVideoMUGFocused()
                         "spaceToMove": m.spaceToMove
                     }
                     updateToParentData(parentDataDetails)
-                    ' m.top.toParentData = {
-                    '     "action": "moveScreen",
-                    '     "component": "searchComponent"
-                    '     "direction": "left",
-                    '     "spaceToMove": m.spaceToMove
-                    ' }
                 else
+                    print "m.previousFocusedColumn - focusedCol <= 0"
+                    print "m.previousFocusedColumn: "m.previousFocusedColumn
+                    print "focusedCol: "focusedCol
                     m.spaceToMove = m.sizeOfAnItem * (focusedCol - m.previousFocusedColumn)
                     parentDataDetails = {
                         "action": "moveScreen",
@@ -212,12 +176,6 @@ sub onSecondVideoMUGFocused()
                         "spaceToMove": m.spaceToMove
                     }
                     updateToParentData(parentDataDetails)
-                    ' m.top.toParentData = {
-                    '     "action": "moveScreen",
-                    '     "component": "searchComponent"
-                    '     "direction": "right",
-                    '     "spaceToMove": m.spaceToMove
-                    ' }
                 end if
             end if
         end if
@@ -238,49 +196,25 @@ function getFirstVideoPageData() as object
 end function
 
 sub onFirstVideoMUGSelected()
-    print "onFirstMUGSelected()"
     m.gridItemSelected = "firstVideoMUG"
-    ' m.firstVideoChildContent.firstVideoControl = "stop"
-    ' m.firstVideoChildContent.secondTimeRenderingFirstVideo = {
-    '     "isSecondTime": true
-    '     "control": "stop"
-    ' }
     m.isCountDownFirstTime = false
     m.countDownValue = 10
     stopCountDown()
-    print "stopfirstvideo is called..........."
     stopFirstVideo()
     m.top.toParentData = {
         "action": "componentCreation",
         "componentName": "fullScreenVideoComponent"
         "pageData": getFirstVideoPageData()
-        
     }
-    ' m.top.getScene().valuesToTopComponent = getFirstVideoDetails()
-    ' m.top.getScene().compToPush = "fullScreenVideoComponent"
 end sub
 
 sub handleAfterOnFirstVideoMUGSelected()
-    print "handleAfterOnFirstVideoMUGSelected()"
     if m.gridItemSelected = "firstVideoMUG"
         m.firstVideoMUG.setFocus(true)
-        print "playFirstVideo() is called!"
         playFirstVideo()
-        print "pla"
-        ' m.firstVideoChildContent.firstVideoControl = "play"
-        ' m.firstVideoChildContent.secondTimeRenderingFirstVideo = {
-        '     "isSecondTime": true
-        '     "control": "play"
-        ' }
     else if m.gridItemSelected = "secondVideoMUG"
-        
         m.secondVideoMUG.setFocus(true)
         playSecondVideo()
-        ' m.secondVideoSelected.secondVideoControl = "play"
-        ' m.lastFocusedItemOfSecondVideo.secondTimeRenderingSecondVideo = {
-        '     "isSecondTime": true
-        '     "control": "play"
-        ' }
     end if
 end sub
 
@@ -352,7 +286,7 @@ function getFirstVideoDetails() as object
         "title" : "Test Video",
         "streamformat" : "hls",
         "control": "play",
-        "desc": "As an open streaming platform, Roku welcomes publishers and developers to grow their audience with Roku. The Roku OS was purpose-built for streaming and runs across all Roku devices, including streaming players and Roku TVs."
+        "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
     }
     return firstVideoDetails
 end function
@@ -364,84 +298,84 @@ function getSecondVideoDetails() as object
             "title" : "Test Video 1",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 2",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 3",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 4",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 5",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 6",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 1",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 2",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 3",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 4",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 5",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         },
         {
             "url": "https://roku.s.cpl.delvenetworks.com/media/59021fabe3b645968e382ac726cd6c7b/60b4a471ffb74809beb2f7d5a15b3193/roku_ep_111_segment_1_final-cc_mix_033015-a7ec8a288c4bcec001c118181c668de321108861.m3u8",
             "title" : "Test Video 6",
             "streamformat" : "hls",
             "control": "none",
-            "desc": "A streaming video!"
+            "desc": "300: Rise of an Empire is a 2014 American epic action film directed by Noam Murro."
         }
     ]
     return secondVideoDetails
@@ -510,6 +444,7 @@ sub onSetFocus(event)
     '     setFocusToFirstVideo()
     '     return
     ' end if
+    
     if event.getData()
         startCountDown()
         'renderFirstVideoComponent()
@@ -656,11 +591,15 @@ function onKeyEvent(key as string, press as boolean) as boolean
             return true
         else if key = "up"
             'to perform scroll for more functionality
+            m.isUpKeyPressed = true
             handleWhenUpPressed()
             if m.isFirstVideoPlaying
                 stopCountDown()
                 stopFirstVideo()
             else if m.isSecondVideoPlaying
+
+                m.secondVideoMUG.jumpToItem = 0
+                m.previousFocusedColumn = 0
                 parentDataDetails = {
                     "action": "moveScreen"
                     "direction": "original",
@@ -673,10 +612,13 @@ function onKeyEvent(key as string, press as boolean) as boolean
             
             return false
         else if key = "down"
+            'm.isDownKeyPressed = true
             if m.firstVideoMUG.hasFocus()
                 stopCountDown()
                 stopFirstVideo()
             else if m.secondVideoMUG.hasFocus()
+                m.secondVideoMUG.jumpToItem = 0
+                m.previousFocusedColumn = 0
                 parentDataDetails = {
                     "action": "moveScreen"
                     "direction": "original",
@@ -684,7 +626,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
                     "spaceToMove": 0
                 }
                 updateToParentData(parentDataDetails)
-                
                 stopSecondVideo()
             end if
             return false
@@ -696,6 +637,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
                 return false
             else if m.secondVideoMUG.hasFocus()
                 print "m.secondVideoMUG.hasFocus()"
+                m.secondVideoMUG.jumpToItem = 0
                 m.previousFocusedColumn = 0
                 stopSecondVideo()
                 parentDataDetails = {

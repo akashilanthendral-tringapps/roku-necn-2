@@ -17,8 +17,7 @@ function setVideo() as void
 end function
 
 sub handleState()
-    print "hanlde state of video component"
-    print "m.video.state: "m.video.state
+
     if m.video.state = "finished"
         m.top.toParentData = {
             "temp":"temp"
